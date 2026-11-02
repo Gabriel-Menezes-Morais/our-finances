@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:17-alpine
+    env_file: credentials/postgres.env
+    ports:
+      - "127.0.0.1:55439:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U our_finances -d our_finances"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+  app:
+    profiles: [runtime]
+    build: .
+    env_file:
+      - .env
+      - credentials/app-postgres.env
+    environment:
+      APP_MODE: connected
+      TELEGRAM_TRANSPORT: polling
+      RUN_WORKER_IN_APP: "true"
+      REPORT_DIRECTORY: /app/exports
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - export_data:/app/exports
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+volumes:
+  postgres_data:
+  export_data:

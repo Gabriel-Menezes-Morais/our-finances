@@ -1,0 +1,43 @@
+# Template revisável; importar no Render cria recursos pagos e exige decisão do proprietário.
+# Configuração compacta: aplicação + bot + worker no mesmo serviço; PostgreSQL separado.
+services:
+  - type: web
+    name: our-finances
+    runtime: docker
+    plan: 0.5c-512mb
+    region: virginia
+    numInstances: 1
+    autoDeployTrigger: "off"
+    healthCheckPath: /ready
+    envVars:
+      - key: APP_MODE
+        value: connected
+      - key: TELEGRAM_TRANSPORT
+        value: polling
+      - key: RUN_WORKER_IN_APP
+        value: "true"
+      - key: APP_TIMEZONE
+        value: America/Sao_Paulo
+      - key: REPORT_DIRECTORY
+        value: /app/exports
+      - key: DATABASE_URL
+        fromDatabase:
+          name: our-finances-db
+          property: connectionString
+      - key: OPENAI_MODEL
+        value: gpt-6-luna
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_OWNER_USER_ID
+        sync: false
+databases:
+  - name: our-finances-db
+    region: virginia
+    plan: 0.1c-256mb
+    postgresMajorVersion: "17"
+    diskSizeGB: 1
+    ipAllowList: []

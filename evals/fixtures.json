@@ -1,0 +1,23 @@
+{
+  "fictional": true,
+  "current_date": "2026-11-02",
+  "timezone": "America/Sao_Paulo",
+  "currency": "BRL",
+  "areas": [{"id": "area-casa", "name": "Casa"}],
+  "categories": [
+    {"id": "cat-food", "name": "Alimentação", "type": "expense"},
+    {"id": "cat-market", "name": "Mercado", "type": "expense", "parent_id": "cat-food"},
+    {"id": "cat-salary", "name": "Salário", "type": "income"},
+    {"id": "cat-fun", "name": "Lazer", "type": "expense"}
+  ],
+  "accounts": [
+    {"id": "acc-bank", "name": "Conta Azul", "type": "bank", "currency": "BRL"},
+    {"id": "acc-other", "name": "Conta Verde", "type": "bank", "currency": "BRL"},
+    {"id": "acc-card", "name": "Cartão Azul", "type": "card", "currency": "BRL"}
+  ],
+  "budgets": [{"id": "budget-food", "name": "Alimentação mensal", "category_id": "cat-food", "amount_minor": 50000, "period": "month", "basis": "cash"}],
+  "goals": [{"id": "goal-trip", "name": "Viagem", "target_minor": 500000}],
+  "reports": [{"id": "report-monthly", "name": "Mensal", "rows": ["category"], "columns": ["month"], "metrics": ["expense_minor"]}],
+  "transactions": [{"id": "tx-last", "type": "expense", "description": "Mercado", "amount_minor": 1234, "occurrence_date": "2026-11-01", "account_id": "acc-bank"}],
+  "last_transaction_id": "tx-last"
+}
